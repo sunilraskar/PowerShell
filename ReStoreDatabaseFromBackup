@@ -1,0 +1,9 @@
+<#
+This script restores a database by overwriting the existing database which
+is configured 
+#>
+$DBName = "TempTestDB"
+$SharedFolder = '\\SQLUATDB\SQLBACKUP\'
+$RelocateData = New-Object Microsoft.SqlServer.Management.Smo.RelocateFile("TempTestDB", "C:\SQL_Data\TempTestDB.mdf")
+$RelocateLog = New-Object Microsoft.SqlServer.Management.Smo.RelocateFile("TempTestDB_log", "C:\SQL_Log\TempTestDB_log.ldf")
+Restore-SqlDatabase  -ServerInstance "SITM-SQL-01" -Database $DBName -RestoreAction Database -BackupFile "$($SharedFolder)\$DBName.bak" -verbose -RelocateFile @($RelocateData,$RelocateLog) -replacedatabase
